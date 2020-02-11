@@ -1,61 +1,132 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Mar 19 19:00:19 2019
-
-@author: TomHall
-"""
-
-import csv
 from tkinter import Tk
 from tkinter.filedialog import askdirectory
 import os
 import glob
-from scrapeMBJpdf import scrape
+import subprocess
+import argparse
+from lxml import etree
+from pykml import parser
+import utm
 
-Tk().withdraw()
-folderin = askdirectory()
-os.chdir(folderin)
+def calculate_new_location_from_offset_meters(longIn, latIn, offE, offN):
 
-fileout = 'multipleMBJpDFs.csv'
+    #convert to UTM (meters) and get relevant zone
+    utmIn = utm.from_latlon(latIn, longIn)
+    eastingsIn = utmIn[0]
+    northingsIn = utmIn[1]
+    UTMzoneNumber = utmIn[2]
+    UTMzoneLetter = utmIn[3]
+    #add offsets (can be negative for W/S)
+    eastingsOut = eastingsIn + offE
+    northingsOut = northingsIn + offN
 
-csvout = open(fileout, 'w', newline='')
-fieldnames= [
-        'SerialNo',
-        'Manufacturer',
-        'Model',
-        'Class_ABCD',
-        'JobID',
-        'PMPP_Watt',
-        'P_nominal_Watt',
-        'Mismatch_perc',
-        'LowLightTestIrradiance_WperM2',
-        'LowLightPerformance_Watt',
-        'CellsNoJudgement_count',
-        'CellsJudged_VeryCritical_count',
-        'CellsJudged_Critical_count',
-        'CellsJudged_Uncritical_count',
-        'CellsJudged_OtherELabnormalities_count',
-        'TotalCells_count',
-        'JudgementComment',
-        'ModuleComment',
-        'Location_RowNo_int',
-        'Location_StringLabel_str',
-        'Location_ModuleNumber_int'
-]
+    #convert new coordinates back to lat-long
+    latlongOut = utm.to_latlon(eastingsOut, northingsOut, UTMzoneNumber, UTMzoneLetter)
 
-writer = csv.DictWriter(csvout, fieldnames=fieldnames)
-writer.writeheader()
+    #utm module returns latitude first
+    latOut = latlongOut[0]
+    longOut = latlongOut[1]
 
-pathStr = folderin+'/*.pdf'
-pdfList = glob.glob(pathStr)
+    #this function returns longitude first because that is 'x'
+    return longOut, latOut
 
-for idx, path2PDF in enumerate(pdfList):
-    print((idx+1), path2PDF, end=' ')
-    rowData = scrape(path2PDF)
-    writer.writerow(rowData)
-    if rowData['TotalCells_count'] != 60:
-        print('!!WARNING: Something other than 60 cells reported!!')
+def start(filePath,offE,offN,offZ):
+    with open(filePath) as fh:
+        kml = parser.parse(fh)
+    docRoot = kml.getroot()
+    #set above ground
+    #docRoot.Document.Folder.Placemark.LineString.altitudeMode = 'relativeToGround'
+    #get coordinate list
+    try: #usual for Agisoft KMLs
+        oldCoordinates = docRoot.Document.Folder.Placemark.LineString.coordinates
+        KMLformat = 'agisoft'
+    except AttributeError:
+        try: #usual for Google Earth KMLs
+            oldCoordinates = docRoot.Document.Placemark.LineString.coordinates
+            KMLformat = 'google-earth'
+        except AttributeError as e:
+            print('ERROR! KML format not recognised: {0}'.format(e))
+            exit(1)
+
+    inList = str(oldCoordinates).split(' ')
+    
+    takeoff = inList[0].split(',')
+    takeoffElevation = float(takeoff[2])
+    
+    outList = []
+    for ii in inList:
+        waypoint = ii.split(',')
+        print(waypoint)
+
+        try:
+            float(waypoint[0])
+            success = True
+        except:
+            print('not a valid coordinate')
+            success = False
+
+        if success:
+
+            longIn = float(waypoint[0])
+            latIn = float(waypoint[1])
+
+            #convert to UTM to add meters then convert back to spherical
+            #this function takes longitude (x) first then latitude (yp)
+            longOut, latOut = calculate_new_location_from_offset_meters(longIn, latIn, offE, offN)
+
+            #long
+            waypoint[0] = str(longOut)
+            #lat
+            waypoint[1] = str(latOut)
+            #elevation
+            oldElevation = float(waypoint[2])
+            newElevation = oldElevation - takeoffElevation + offZ
+            waypoint[2] = str(newElevation)
+            print(waypoint)
+
+            wayPointString = ','.join(waypoint)
+            outList.append(wayPointString)
+    
+    newCoordinates = ' '.join(outList)
+    if KMLformat == 'agisoft':
+        docRoot.Document.Folder.Placemark.LineString.coordinates = newCoordinates
+    elif KMLformat == 'google-earth':
+        docRoot.Document.Placemark.LineString.coordinates = newCoordinates
     else:
-        print('DONE!')
+        print('ERROR: KML format invalid')
+        exit(1)
 
-csvout.close()
+    stringOut = etree.tostring(docRoot, pretty_print=True).decode('utf-8')
+
+    fileStem = os.path.splitext(filePath)
+    fileOut = fileStem[0] + '_zeroed' + '.kml'
+
+    with open(fileOut, 'w') as fhout:
+        fhout.write(stringOut)
+
+### MAIN ###
+
+#request folder from user
+Tk().withdraw()
+folderIn = askdirectory()
+if not folderIn:
+    print("No folder specified")
+    input("Press enter to continue.")
+    exit(1)
+
+#find KML files in that folder that don't already end in '_zeroed.kml'
+pathStr = folderIn+'/*.kml'
+kmlList = [fn for fn in glob.glob(pathStr) if not os.path.basename(fn).endswith('_zeroed.kml')]
+
+print(kmlList)
+
+#request offset values
+offE = input("Offset to the East (or negative offset to move West) [meters]:")
+offN = input("Offset to the North (or negative offset to move South) [meters]:")
+offZ = input("Altitude above takeoff (first waypoint assumed as takeoff-pad) [meters]:")
+
+#run the subprocess
+for idx, path2kml in enumerate(kmlList):
+    start(path2kml,float(offE),float(offN),float(offZ))
+
+input("Press enter to continue.")
