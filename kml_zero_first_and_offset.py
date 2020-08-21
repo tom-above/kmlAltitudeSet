@@ -4,6 +4,8 @@ from lxml import etree
 from pykml import parser
 import utm
 
+# version which uses meters rather than degrees
+
 argparser = argparse.ArgumentParser(description='Offset KML')
 argparser.add_argument('path', help='path to KML file')
 argparser.add_argument('offE', help='meters (+East)')
