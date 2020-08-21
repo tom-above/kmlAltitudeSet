@@ -9,7 +9,14 @@
             "type": "python",
             "request": "launch",
             "program": "${file}",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "args": [
+                "--path", "Q:\\Geefsweer\\GeefsweerZ3_0-aligned.kml",
+                "--offx","0",
+                "--offy","0.000018",
+                "--offz","23",
+                "--suffix"
+            ]
         }
     ]
 }
