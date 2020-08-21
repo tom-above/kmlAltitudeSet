@@ -12,6 +12,7 @@ Tk().withdraw()
 kmlIn = askopenfilename()
 
 parameters = [
+    (0, 0, 23, '_0-aligned'), # (x, y, z, _suffix)
     (0, -0.000036, 23, '_4m-S'), # (x, y, z, _suffix)
     (0, -0.000018, 23, '_2m-S'),
     (0, 0.000018, 23, '_2m-N'),
@@ -21,6 +22,6 @@ parameters = [
 pyCall = 'py C:\\code\\kmlAltitudeSet\\kml_zero_first_elevation.py'
 
 for pp in parameters:
-    osCall = f"{pyCall} -p {kmlIn} -x {pp[0]:f} -y {pp[1]:f} -z {pp[2]:f} -s {pp[3]}"
+    osCall = f'{pyCall} -p "{kmlIn}" -x {pp[0]:f} -y {pp[1]:f} -z {pp[2]:f} -s {pp[3]}'
     print(osCall)
     subprocess.call(osCall)
