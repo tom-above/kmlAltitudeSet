@@ -11,11 +11,11 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                "--path", "Q:\\Geefsweer\\GeefsweerZ3_0-aligned.kml",
+                "--path", "Q:\\Italy-EF-solare\\Falaschetti\\FALASCHETTI_Z01.kml",
                 "--offx","0",
-                "--offy","0.000018",
-                "--offz","23",
-                "--suffix"
+                "--offy","0",
+                "--offz","33",
+                "--suffix","0-aligned"
             ]
         }
     ]

@@ -9,10 +9,11 @@ argparser.add_argument('-x','--offx', type=float, help='degrees (+East)')
 argparser.add_argument('-y', '--offy', type=float, help='degrees (+North)')
 argparser.add_argument('-z', '--offz', type=float, help='meters (Zeros to takeoff, so this is offset above takeoff location)')
 argparser.add_argument('-s', '--suffix', type=str, help='suffix to add to KML name')
+argparser.add_argument('-o', '--outpath', type=str, nargs='?', const='', help='output path (relative to input path). default = inpath')
 args = argparser.parse_args()
 print(args)
 
-def start(filePath,offx,offy,offz,suffix):
+def start(filePath,offx,offy,offz,suffix,outpath):
     with open(filePath) as fh:
         kml = parser.parse(fh)
     docRoot = kml.getroot()
@@ -22,7 +23,15 @@ def start(filePath,offx,offy,offz,suffix):
     try:
         oldCoordinates = docRoot.Document.Folder.Placemark.LineString.coordinates
     except:
-        oldCoordinates = docRoot.Document.Placemark.LineString.coordinates
+        try:
+            oldCoordinates = docRoot.Document.Placemark.LineString.coordinates
+        except:
+            for pm in docRoot.Document.Placemark:
+                if pm.name == '3D Path':
+                    oldCoordinates = pm.LineString.coordinates
+                else:
+                    docRoot.Document.remove(pm)
+
     inList = str(oldCoordinates).split(' ')
     
     takeoff = inList[0].split(',')
@@ -52,26 +61,36 @@ def start(filePath,offx,offy,offz,suffix):
         except:
             print('bad row ignored')
 
+        if newElevation < 4:
+            print('DANGER!! Absolute elevation relative to takeoff < 4m. Exiting for safety.')
+            exit(1)
+
     newCoordinates = ' '.join(outList)
     try:
         docRoot.Document.Folder.Placemark.LineString.coordinates = newCoordinates
     except:
         docRoot.Document.Placemark.LineString.coordinates = newCoordinates
 
-    fileStem = os.path.splitext(filePath)
-    fileOut = fileStem[0] + suffix + '.kml'
-    docRoot.Document.name = os.path.split(fileOut)[-1]
-
     stringOut = etree.tostring(docRoot, pretty_print=True).decode('utf-8')
+
+    splitPath = os.path.split(filePath)
+    pathStem = splitPath[0]
+    fileNameStem = os.path.splitext(splitPath[1])[0]
+    outStem = f'{pathStem}{outpath}'
+    #fileOut = splitPath[0] + '\\' + suffix + '.kml'
+    fileOut = f'{outStem}\\{fileNameStem}{suffix}.kml'
+    if not os.path.exists(outStem):
+        os.mkdir(outStem)
+
+    docRoot.Document.name = os.path.split(fileOut)[-1]
 
     with open(fileOut, 'w') as fhout:
         fhout.write(stringOut)
-        
 
 if os.path.exists(args.path) and os.path.isfile(args.path):
         _, extension = os.path.splitext(args.path)
         if extension == '.kml':
-            start(args.path, args.offx, args.offy, args.offz, args.suffix)
+            start(args.path, args.offx, args.offy, args.offz, args.suffix, args.outpath)
             exit(0)
         else:
             print("ERROR: Specified file not a KML file (.kml)")
