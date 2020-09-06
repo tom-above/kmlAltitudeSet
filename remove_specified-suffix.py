@@ -3,7 +3,7 @@ import os
 from tkinter import Tk
 from tkinter.filedialog import askdirectory
 
-suffix = '_Andrea_3Dpath'
+suffix = '_0-aligned_3Dpath'
 
 # Select an origin folder
 Tk().withdraw() # We don't want a full GUI, so keep the root window from appearing
@@ -14,6 +14,8 @@ os.chdir(surveyFolderPath)
 kmls = glob.glob('*.kml')
 for kk in kmls:
     fstem = os.path.splitext(kk)[0]
-    if fstem[len(suffix):] == suffix:
-        newname = fstem[:len(suffix)] + '.kml'
+    print(fstem[len(suffix)-2:])
+    if fstem[len(suffix)-2:] == suffix:
+        newname = fstem[:len(suffix)-2] + '.kml'
+        print(newname)
         os.rename(kk, newname)
