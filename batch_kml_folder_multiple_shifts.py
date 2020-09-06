@@ -10,7 +10,7 @@ import glob
 
 outpath = '\\offset'
 x = 0
-z = 33 # meters elevation
+z = 33 # meters elevation ABOVE WAYPOINT 1
 speed = 4.5 # meters per second
 heading = 0 #degrees clockwise from North (0)
 parameters = [
