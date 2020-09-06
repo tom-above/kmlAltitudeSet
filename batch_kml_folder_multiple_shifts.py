@@ -10,13 +10,15 @@ import glob
 
 outpath = '\\offset'
 x = 0
-z = 33 # meters elevation
+z = 30 # meters elevation
 parameters = [
-    (x, 0, z, '_0-aligned'), # (x, y, z, _suffix)
+#    (x, 0, z, '_0-aligned'), # (x, y, z, _suffix)
 #    (x, -0.000036, z, '_4m-S'),
 #    (x, 0.000036, z, '_4m-N'),
-    (x, -0.000018, z, '_2m-S'),
-    (x, 0.000018, z, '_2m-N')
+    (-0.000003, -0.000009, z, '_1m-S'),
+    (0.000003, 0.000009, z, '_1m-N'),
+    (-0.000006, -0.000018, z, '_2m-S'),
+    (0.000006, 0.000018, z, '_2m-N')
 ]
 
 # Select an origin folder
