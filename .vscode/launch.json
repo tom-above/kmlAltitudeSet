@@ -11,7 +11,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                "--path", "Q:\\Italy-EF-solare\\Falaschetti\\FALASCHETTI_Z01.kml",
+                "--path", "3D path.kml",
                 "--offx","0",
                 "--offy","0",
                 "--offz","33",
