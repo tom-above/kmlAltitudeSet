@@ -9,11 +9,13 @@ argparser.add_argument('-x','--offx', type=float, help='degrees (+East)')
 argparser.add_argument('-y', '--offy', type=float, help='degrees (+North)')
 argparser.add_argument('-z', '--offz', type=float, help='meters (Zeros to takeoff, so this is offset above takeoff location)')
 argparser.add_argument('-s', '--suffix', type=str, help='suffix to add to KML name')
+argparser.add_argument('-sp', '--speed', type=str, help='speed in m/s')
+argparser.add_argument('-hd', '--heading', type=str, help='heading clockwise from North (0 degrees)')
 argparser.add_argument('-o', '--outpath', type=str, nargs='?', const='', help='output path (relative to input path). default = inpath')
 args = argparser.parse_args()
 print(args)
 
-def start(filePath,offx,offy,offz,suffix,outpath):
+def start(filePath,offx,offy,offz,suffix,speed,heading,outpath):
     with open(filePath) as fh:
         kml = parser.parse(fh)
     docRoot = kml.getroot()
@@ -71,6 +73,9 @@ def start(filePath,offx,offy,offz,suffix,outpath):
     except:
         docRoot.Document.Placemark.LineString.coordinates = newCoordinates
 
+    docRoot.Document.speed=speed
+    docRoot.Document.heading=heading
+
     stringOut = etree.tostring(docRoot, pretty_print=True).decode('utf-8')
 
     splitPath = os.path.split(filePath)
@@ -90,7 +95,7 @@ def start(filePath,offx,offy,offz,suffix,outpath):
 if os.path.exists(args.path) and os.path.isfile(args.path):
         _, extension = os.path.splitext(args.path)
         if extension == '.kml':
-            start(args.path, args.offx, args.offy, args.offz, args.suffix, args.outpath)
+            start(args.path, args.offx, args.offy, args.offz, args.suffix, args.speed, args.heading, args.outpath)
             exit(0)
         else:
             print("ERROR: Specified file not a KML file (.kml)")

@@ -11,6 +11,8 @@ import glob
 outpath = '\\offset'
 x = 0
 z = 30 # meters elevation
+speed = 3.5 # meters per second
+heading = 14 #degrees clockwise from North (0)
 parameters = [
 #    (x, 0, z, '_0-aligned'), # (x, y, z, _suffix)
 #    (x, -0.000036, z, '_4m-S'),
@@ -32,7 +34,7 @@ for kml in kmlFileList:
     pyCall = 'py C:\\code\\kmlAltitudeSet\\kml_zero_first_elevation.py'
 
     for pp in parameters:
-        osCall = f'{pyCall} -p "{kml}" -x {pp[0]:f} -y {pp[1]:f} -z {pp[2]:f} -s {pp[3]} -o {outpath}'
+        osCall = f'{pyCall} -p "{kml}" -x {pp[0]:f} -y {pp[1]:f} -z {pp[2]:f} -s {pp[3]} -sp {speed} -hd {heading} -o {outpath}'
         print(osCall)
         response = subprocess.run(osCall, stderr=subprocess.PIPE)
         returncode = response.returncode

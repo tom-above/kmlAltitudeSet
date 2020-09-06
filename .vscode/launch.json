@@ -11,10 +11,12 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                "--path", "3D path.kml",
+                "--path", "3DPath.kml",
                 "--offx","0",
                 "--offy","0",
                 "--offz","33",
+                "--speed","3.5",
+                "--heading","14",
                 "--suffix","0-aligned"
             ]
         }
