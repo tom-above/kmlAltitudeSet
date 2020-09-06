@@ -14,8 +14,8 @@ os.chdir(surveyFolderPath)
 kmls = glob.glob('*.kml')
 for kk in kmls:
     fstem = os.path.splitext(kk)[0]
-    print(fstem[len(suffix)-2:])
-    if fstem[len(suffix)-2:] == suffix:
-        newname = fstem[:len(suffix)-2] + '.kml'
+    print(fstem[(-len(suffix)):])
+    if fstem[(-len(suffix)):] == suffix:
+        newname = fstem[:(-len(suffix))] + '.kml'
         print(newname)
         os.rename(kk, newname)
