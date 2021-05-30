@@ -1,0 +1,102 @@
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+  <Document>
+    <name>TLanuvio_Z01_0-aligned_tom - Litchi 3D Path</name>
+    <StyleMap id="startpin-style">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#startpin-style-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#startpin-style-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="startpin-style-normal">
+      <IconStyle>
+        <color>ff00ff00</color>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href>
+        </Icon>
+      </IconStyle>
+    </Style>
+    <Style id="startpin-style-highlight">
+      <IconStyle>
+        <color>ff00ff00</color>
+        <scale>1.3</scale>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href>
+        </Icon>
+      </IconStyle>
+    </Style>
+    <StyleMap id="endpin-style">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#endpin-style-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#endpin-style-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="endpin-style-normal">
+      <IconStyle>
+        <color>ff0000ff</color>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href>
+        </Icon>
+      </IconStyle>
+    </Style>
+    <Style id="endpin-style-highlight">
+      <IconStyle>
+        <color>ff0000ff</color>
+        <scale>1.3</scale>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href>
+        </Icon>
+      </IconStyle>
+    </Style>
+    <StyleMap id="wpline-style">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#wpline-style-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#wpline-style-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="wpline-style-normal">
+      <LineStyle>
+        <color>ff00ffff</color>
+        <width>3</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>5000ffff</color>
+        <outline>0</outline>
+      </PolyStyle>
+    </Style>
+    <Style id="wpline-style-highlight">
+      <LineStyle>
+        <color>ff00ffff</color>
+        <width>3</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>5000ffff</color>
+      </PolyStyle>
+    </Style>
+    <Placemark>
+      <name>3D Path</name>
+      <styleUrl>#wpline-style</styleUrl>
+      <LineString>
+        <extrude>1</extrude>
+        <tessellate>1</tessellate>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">12.662517055112582,41.66227093200354,60.0 12.66328439978492,41.66226699556617,60.0 12.664051745221379,41.66229905402523,60.0 12.664050404116871,41.66224895870124,60.0 12.663285974155126,41.66221589829001,60.0 12.662521544978382,41.66218283281391,60.0 12.66252288608289,41.66213273739951,60.0 12.66328865636941,41.66216530195639,60.0 12.664054427430393,41.66219786143062,60.0 12.664050404116871,41.662148767936365,60.0 12.663292679687002,41.662116208384184,60.0 12.662534956023457,41.66208364385562,60.0 12.662540320441487,41.66203154454357,60.0 12.66330206739874,41.662065611988815,60.0 12.664063815161946,41.662099674404686,60.0 12.66406113295293,41.66205158274552,60.0 12.663304749622363,41.662018522179906,60.0 12.662548367068531,41.66198545665549,60.0 12.662555072591068,41.66193636299926,60.0 12.66331212570859,41.66196842664257,60.0 12.664069179579975,41.66200048531828,60.0 12.664075885102513,41.66195339549651,60.0 12.663318831219348,41.66192033488486,60.0 12.662561778113606,41.66188726930563,60.0 12.662563119218113,41.661838175574566,60.0 12.663319766763719,41.66187023926409,60.0 12.664076415062787,41.66190229799134,60.0 12.664084461689832,41.66185120044563,60.0 12.663321372833286,41.66181813982127,60.0 12.662558284760358,41.661785074149805,60.0 12.662559625864866,41.66173297459617,60.0 12.66332271394373,41.66176553933745,60.0 12.66408580279434,41.661798099031635,60.0 12.664077756167295,41.66174599948857,60.0 12.663326066722458,41.66171444160892,60.0 12.662574378014448,41.66168287883183,60.0 12.663574841977002,41.661672859674276,60.0 12.664081779480817,41.66169490181885,60.0 12.663683471442106,41.66161675236318,60.0 12.663243589163663,41.66159771594295,60.0 12.662586447955015,41.66151255294146,60.0 12.663000849247815,41.66152858363268,60.0 12.663044435189192,41.66147297719343,60.0 12.663265046835782,41.661482495384625,60.0 12.66325565910423,41.661539604730585,60.0 12.664095190525892,41.66157667568247,60.0 12.6641327414521,41.661515558696365,60.0 12.663371168760502,41.66148356519646,60.0 12.662609596825716,41.66145156666951,60.0 12.662613620139238,41.66138844572414,60.0 12.663368661601002,41.66142050962707,60.0 12.664123703814623,41.661452568588786,60.0 12.664131750441667,41.661385439963304,60.0 12.663372684906616,41.66135288003394,60.0 12.662613620139238,41.66132031511056,60.0 12.66261764345276,41.6612481767352,60.0 12.663380731531628,41.661280741721605,60.0 12.664143820382234,41.66131330166092,60.0 12.664143820382234,41.661240161355146,60.0 12.66338475485309,41.661208102314106,60.0 12.662625690079805,41.66117603827906,60.0</coordinates>
+      </LineString>
+    </Placemark>
+    <speed xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">5</speed>
+    <heading xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">0</heading>
+  </Document>
+</kml>

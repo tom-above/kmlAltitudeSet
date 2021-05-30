@@ -11,6 +11,8 @@ argparser.add_argument('-z', '--offz', type=float, help='meters (Zeros to takeof
 argparser.add_argument('-s', '--suffix', type=str, help='suffix to add to KML name')
 argparser.add_argument('-sp', '--speed', type=str, help='speed in m/s')
 argparser.add_argument('-hd', '--heading', type=str, help='heading clockwise from North (0 degrees)')
+argparser.add_argument('-fs', '--fixstart', type=str, help='fix xy of first point [takeoff]')
+argparser.add_argument('-rf', '--remfinal', type=str, help='remove final point')
 argparser.add_argument('-o', '--outpath', type=str, nargs='?', const='', help='output path (relative to input path). default = inpath')
 args = argparser.parse_args()
 print(args)
@@ -44,17 +46,21 @@ def start(filePath,offx,offy,offz,suffix,speed,heading,outpath):
         waypoint = ii.split(',')
         print(waypoint)
         try:
-            #long
-            oldX = float(waypoint[0])
-            newX = oldX + offx
-            waypoint[0] = str(newX)
-            #lat
-            oldY = float(waypoint[1])
-            newY = oldY + offy
-            waypoint[1] = str(newY)        
-            #elevation
-            oldElevation = float(waypoint[2])
+            oldX = float(waypoint[0]) #long
+            oldY = float(waypoint[1]) #lat
+            oldElevation = float(waypoint[2]) #elev
+
+            if ((not outList) and (args.fixstart == 'true')): # If the first waypoint, then don't shift xy
+                newX = oldX
+                newY = oldY
+            else:
+                newX = oldX + offx
+                newY = oldY + offy
+            #always offset elevation
             newElevation = oldElevation - takeoffElevation + offz
+
+            waypoint[0] = str(newX)
+            waypoint[1] = str(newY)        
             waypoint[2] = str(newElevation)
             print(waypoint)
 
@@ -66,6 +72,9 @@ def start(filePath,offx,offy,offz,suffix,speed,heading,outpath):
         if newElevation < 4:
             print('DANGER!! Absolute elevation relative to takeoff < 4m. Exiting for safety.')
             exit(1)
+
+    if args.remfinal == 'true':
+        outList.pop() #remove last waypoint from outList
 
     newCoordinates = ' '.join(outList)
     try:

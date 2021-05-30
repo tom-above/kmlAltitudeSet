@@ -10,24 +10,14 @@ import glob
 
 outpath = '\\offset'
 x = 0
-y = 0
-z = 120
-speed = 7.78 # meters per second
+# y = 0
+z = 60
+speed = 5 # meters per second
 heading = 0 #degrees clockwise from North (0)
 parameters = [
-    # (x, 0, z, '_0-aligned'), # (x, y, z, _suffix)
-    #(x, -0.000036, 16, '_4m-S'), # (x, y, z, _suffix)
-    # (x, -0.0000405, z, '_4p5m-S'), # (x, y, z, _suffix)
-    (x, y, z, '_done') # (x, y, z, _suffix)
-    # (x, (0.000009)*-3, 10, '_10m-Z_3m-S'), # (x, y, z, _suffix)
-    # (x, (0.000009)*-3.5, 10, '_10m-Z_3p5m-S'), # (x, y, z, _suffix)
-    # (x, (0.000009)*-3, 12, '_12m-Z_3m-S'), # (x, y, z, _suffix)
-    # (x, (0.000009)*-3.5, 12, '_12m-Z_3p5m-S'), # (x, y, z, _suffix)
-    # (x, (0.000009)*-4, 12, '_12m-Z_4m-S'), # (x, y, z, _suffix)
-    # (x, (0.000009)*-4, 14, '_14m-Z_4m-S'), # (x, y, z, _suffix)
-    # (x, (0.000009)*-4.5, 14, '_14m-Z_4p5m-S'), # (x, y, z, _suffix)
-    # (x, (0.000009)*-5, 14, '_14m-Z_5m-S') # (x, y, z, _suffix)
-    #((0.000009)*-2, y, z, '_2m-W'), # (x, y, z, _suffix)
+    (x, (0.000009)*-4, z, '_4m-S'), # (x, y, z, _suffix)
+    (x, 0, z, '_0-aligned'), # (x, y, z, _suffix)
+    (x, (0.000009)*4, z, '_4m-N') # (x, y, z, _suffix)
     # (x, -0.0000495, z, '_5p5m-S'), # (x, y, z, _suffix)
     #(x, -0.000054, 16, '_6m-S'), # (x, y, z, _suffix)
     #(x, -0.000027, 12, '_12mAGL_3m-S'), # (x, y, z, _suffix)
@@ -57,7 +47,7 @@ for kml in kmlFileList:
     pyCall = 'py C:\\code\\kmlAltitudeSet\\kml_zero_first_elevation.py'
 
     for pp in parameters:
-        osCall = f'{pyCall} -p "{kml}" -x {pp[0]:f} -y {pp[1]:f} -z {pp[2]:f} -s {pp[3]} -sp {speed} -hd {heading} -o {outpath}'
+        osCall = f'{pyCall} -p "{kml}" -x {pp[0]:f} -y {pp[1]:f} -z {pp[2]:f} -s {pp[3]} -sp {speed} -hd {heading} -o {outpath} -fs "true" -rf "false"'
         print(osCall)
         response = subprocess.run(osCall, stderr=subprocess.PIPE)
         returncode = response.returncode

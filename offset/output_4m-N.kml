@@ -1,0 +1,28 @@
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <Style id="style1">
+      <LineStyle>
+        <color>ffffffff</color>
+        <width>3</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>ffffffff</color>
+        <fill>false</fill>
+      </PolyStyle>
+    </Style>
+    <Folder>
+      <name>Line Features</name>
+      <description>Line Features</description>
+      <Placemark>
+        <description>testlines</description>
+        <LineString>
+          <altitudeMode xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">relativeToGround</altitudeMode>
+          <coordinates xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">-1.0726607268,51.2137117772,60.0 -1.0710546428,51.2137351305,57.083551 -1.0711066249,51.2138091352,57.216639999999984 -1.071908741,51.2138158949,58.56825899999998 -1.0727131613,51.2138221549,60.08067599999998 -1.0727638319,51.213895928300005,60.07208799999998 -1.0720042891,51.2138902378,58.671666999999985 -1.0711565649,51.2138835235,57.32114899999999 -1.0710459306,51.2139563533,57.04665799999998 -1.0717173606,51.2139618708,58.17577 -1.0728121459,51.2139704031,60.20742199999998 -1.0728642346,51.214044503000004,60.357067 -1.0720619469,51.2140378427,58.707914999999986 -1.0714316285,51.2140330051,57.675219999999996 -1.070432976,51.214025152000005,56.32159999999999 -1.0697591852,51.214019837500004,55.392469000000006 -1.0693220085,51.2140163913,54.974783</coordinates>
+        </LineString>
+        <styleUrl>#style1</styleUrl>
+      </Placemark>
+    </Folder>
+    <speed xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">5</speed>
+    <heading xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">0</heading>
+  </Document>
+</kml>
